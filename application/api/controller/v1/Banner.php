@@ -8,36 +8,39 @@
 
 namespace app\api\controller\v1;
 
-use think\Controller;
-use think\Validate;
+use app\api\controller\BaseController;
+use app\api\validate\IDMustBePositiveInt;
+use app\api\model\Banner as BannerModel;
+use app\lib\exception\MissException;
 
-class Banner extends Controller
+class Banner extends BaseController
 {
-	//构建参数验证
-
-	//获取banner,$id获取哪个banner
+    /**
+     * 获取Banner信息
+     * @url     /banner/:id
+     * @http    get
+     * @param   int $id banner id
+     * @return  array of banner item, code 200
+     * @other MissException
+     */
 	public function getBanner($id)
 	{
-		try{
-			
-		}catch(Exception $e){
+//	    $validate = new IDMustBePositiveInt();
+//	    $validate->goCheck();
+	    $banner = BannerModel::getBannerById($id);
 
-		}
-		//echo '请求参数是:';
-		//echo $id;
-		$data = [
-			'id' 	=>$id
-		];
-
-		$validate = new Validate([
-			'name'	=> 'require|max:10',
-			'email'	=> 'email'
-		]);
-
-		$result = $validate->batch()->check($data);
-		//var_dump($validate->getError());
-		if($result){
-
-		}
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

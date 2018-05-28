@@ -12,4 +12,7 @@
 use think\Route;
 Route::post('index','index/index/index');
 
-Route::get('banner/:id','api/v1.Banner/getBanner');
+//Miss 404
+//Miss 路由开启，默认的普通模式将无法访问
+//Route::miss('api/v1.Miss/miss');
+Route::get('api/:version/banner/:id', 'api/:version.Banner/getBanner');

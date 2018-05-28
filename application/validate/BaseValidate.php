@@ -1,4 +1,9 @@
 <?php
+namespace app\api\validate;
+
+use think\Request;
+use think\Validate;
+use app\lib\exception\ParameterException;
 
 class BaseValidate extends Validate
 {
@@ -8,14 +13,37 @@ class BaseValidate extends Validate
 		$request = Request::instance();
 		$params = $request->param();
 
-		$result = $this->check();
-		if(!$result){
-			$error = $this->error();
+		;
+		if(!$this->check($params)){
+			$exception = new parameterException([
+			    'msg'   =>  is_array($this->error) ? implode(';', $this->error) : $this->error
+            ]);
 			//抛出一个全局异常
-			throw new Exception($error);
-		}else{
-			return true;
+			throw $exception;
 		}
-
+        return true;
 	}
+
+	protected function isPositiveInteger($value, $rule= '', $data = '', $field = '')
+    {
+        if (is_numeric($value) && is_int($value + 0) && ($value + 0) > 0)
+        {
+            return true;
+        }
+        return $field;
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
