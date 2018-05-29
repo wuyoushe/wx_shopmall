@@ -1,0 +1,82 @@
+<?php
+namespace app\api\validate;
+
+use app\api\service\Token;
+use app\lib\enum\ScopeEnum;
+use app\lib\exception\ForbiddenException;
+use app\lib\exception\ParameterException;
+use app\lib\exception\TokenException;
+use think\Request;
+use think\Validate;
+
+class BaseValidate extends Validate {
+	public function goCheck() {
+		//获取所有的传递的参数
+		$request = Request::instance();
+		$params  = $request->param();
+		$params['token']	= $request->header('token');
+		$result = $this->check();
+
+		if (!$this->check($params)) {
+			$exception = new ParameterException([
+				'msg'	=> is_array($this->error) ? implode(';', $this->error) : $this->error,
+			]);
+			//抛出一个全局异常
+			throw $exception;
+		} 
+		return true;
+	}
+
+	/**
+	* @param array $array 通常传入request.post变量数组
+	* @return array 按照规则key过滤后的变量数组
+	* @throws ParameterException
+	*/
+
+	public function getDataByRule($arrays)
+	{
+		if (array_key_exitst('user_id', $arrays) | array_key_exitst('uid', $arrays))
+		{
+			//不允许包含user_id或者uid，防止恶意覆盖user_id外键
+			throw new ParameterException([
+				'msg'	=>	'参数中包含非法的参数名user_id或者uid'
+			]);
+		}
+		$newArray = [];
+		foreach ($this->rule as $key => $value) {
+			$newArray[$key] = $arrays[$key];
+		}
+		return $newArray;
+	}
+
+	public function isPositiveInteger($value, $rule='', $data='', $field='')
+	{
+		if (is_numeric($value) && is_int($value + 0) && ($value + 0) > 0){
+			return true;
+		}
+		return $field . '必须是整数'；
+	}
+
+	protected function isNotEmpty($value, $rule = '', $data = '', $field = '')
+	{
+		if (empty($value)){
+			return $field . '不允许为空';
+		}else{
+			return true;
+		}
+	}
+
+	/**
+	*手机号的验证规则
+	*/
+	protected function isMobile($value)
+	{
+		$rule = '^1(3|4|5|7|8)[0-9]\d{8}^';
+		$result = preg_match($rule, $value);
+		if ($result) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+}
