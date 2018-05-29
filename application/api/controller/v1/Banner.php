@@ -25,8 +25,10 @@ class Banner extends BaseController
      */
 	public function getBanner($id)
 	{
-//	    $validate = new IDMustBePositiveInt();
-//	    $validate->goCheck();
+        var_dump(new IDMustBePositiveInt());
+        die();
+	    $validate = new IDMustBePositiveInt();
+	    $validate->goCheck();
 	    $banner = BannerModel::getBannerById($id);
         echo $banner;
 
