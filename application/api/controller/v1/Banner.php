@@ -25,12 +25,16 @@ class Banner extends BaseController
      */
 	public function getBanner($id)
 	{
-        var_dump(new IDMustBePositiveInt());
-        die();
 	    $validate = new IDMustBePositiveInt();
 	    $validate->goCheck();
 	    $banner = BannerModel::getBannerById($id);
-        echo $banner;
+        if (!$banner ) {
+            throw new MissException([
+                'msg'   =>  '请求的banner不存在',
+                'errorCode' => 40000
+            ]);
+        }
+        return $banner;
 
 	}
 }
