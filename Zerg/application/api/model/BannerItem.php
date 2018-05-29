@@ -15,6 +15,9 @@ class BannerItem extends BaseModel
 
 	public function img()
 	{
+	    //img与BannerItem关系一对一，使用belongTo()
+        //belongTo(关联模型名字，外键，主键名);
+        //需要从哪边关联另一边就到哪里写
 		return $this->belongsTo('Image', 'img_id', 'id');
 	}
 }
