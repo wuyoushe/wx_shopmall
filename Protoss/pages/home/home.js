@@ -16,6 +16,16 @@ Page({
     })
   },
   onLoad: function () {
+    var that = this;
+    wx.request({
+      // url: 'http://news-at.zhihu.com/api/4/news/latest',
+      url:  'https://api.douban.com/v2/book/1220562',
+      header: {'Content-Type':'application/json'},
+      success:function (res){
+        console.log(res);
+      }
+
+    })
     if (app.globalData.userInfo) {
       this.setData({
         userInfo: app.globalData.userInfo,
