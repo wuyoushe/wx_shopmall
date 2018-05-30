@@ -18,8 +18,7 @@ Page({
   onLoad: function () {
     var that = this;
     wx.request({
-      // url: 'http://news-at.zhihu.com/api/4/news/latest',
-      url:  'https://api.douban.com/v2/book/1220562',
+      url: 'http://www.felton.xin/api/v1/banner/1',
       header: {'Content-Type':'application/json'},
       success:function (res){
         console.log(res);
