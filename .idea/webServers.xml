@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="addd3c7e-8fca-47d3-af48-1ad6f50a3270" name="aliyun" url="http://47.93.15.195">
+        <fileTransfer host="47.93.15.195" port="22" rootFolder="/usr/local/apache/htdocs/wx_shopmall" accessType="SFTP">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
