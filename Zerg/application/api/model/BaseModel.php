@@ -11,16 +11,19 @@ class BaseModel extends Model
 
 	use softDelete;
 
-	/**/
 	protected $hidden = ['delete_time'];
 
+    /**
+     * @param $value
+     * @param $data
+     * @return string
+     * 读取器
+     */
 	protected function prefixImgUrl($value, $data)
 	{
 		$finalUrl = $value;
 		if($data['from'] == 1)
 		{
-		    //读取自定义的配置文件 extra目录下的可以直接config读取
-            //拼接url
 			$finalUrl = config('setting.img_prefix').$value;
 		}
 		return $finalUrl;

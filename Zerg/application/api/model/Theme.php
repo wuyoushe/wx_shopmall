@@ -18,6 +18,7 @@ class Theme extends BaseModel
 
 	public function topicImg()
 	{
+	    //关联的表Image ,关联外键，关联表的主键
 		return $this->belongsTo('Image', 'topic_img_id', 'id');
 	}
 
@@ -31,6 +32,7 @@ class Theme extends BaseModel
 	*/
 	public function products()
 	{
+	    //belongsToMay参数1,关联表，2中间表表名3，它们关联关系的键
 		return $this->belongsToMany(
 			'product', 'theme_product', 'product_id', 'theme_id');
 	}
@@ -59,7 +61,7 @@ class Theme extends BaseModel
             return [];
         }
 
-        $themes = self::with('products, img')
+        $themes = self::with('products,img')
             ->select($ids);
         return $themes;
     }

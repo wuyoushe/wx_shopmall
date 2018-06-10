@@ -22,7 +22,6 @@ class ExceptionHandler extends Handle
 	private $msg;
 	private $errorCode;
 
-	/*改成基类的Exception*/
 	public function render(\Exception $e)
 	{
 		if ($e instanceof BaseException)

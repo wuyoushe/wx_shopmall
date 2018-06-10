@@ -16,3 +16,68 @@ Route::post('index','index/index/index');
 //Miss 路由开启，默认的普通模式将无法访问
 //Route::miss('api/v1.Miss/miss');
  Route::get('api/:version/banner/:id', 'api/:version.Banner/getBanner');
+//路由被重新匹配
+ Route::get('api/:version/theme','api/:version.Theme/getSimpleList');
+ Route::get('api/:version/theme/:id', 'api/:version.Theme/getComplexOne');
+ //分组路由
+Route::group('api/:version/theme', function(){
+   Route::get('', 'api/:version.Theme/getSimpleList');
+   Route::get('/', 'api/:version.Theme/getComplexOne');
+   Route::post(':t_id/product/:p_id', 'api/:version.Theme/addThemeProduct');
+   Route::delete(':t_id/product/:p_id', 'api/:version.Theme/deleteThemeProduct');
+});
+
+//Product
+Route::post('api/:version/product', 'api/:version.Product/createOne');
+Route::delete('api/:version/product/:id', 'api/:version.Product/deleteOne');
+Route::get('api/:version/product/by_category/paginate', 'api/:version.Product/getByCategory');
+Route::get('api/:version/product/by_category', 'api/:version.Product/getAllInCategory');
+Route::get('api/:version/product/:id', 'api/:version.Product/getOne',[],['id'=>'\d+']);
+Route::get('api/:version/product/recent', 'api/:version.Product/getRecent');
+
+//分类列表
+Route::get('api/:version/category','api/:version.Category/getCategory');
+Route::get('api/:version/category/all','api/:version.Category/getAllCategories');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -7,7 +7,6 @@ class Image extends BaseModel
 {
 	protected $hidden = ['delete_time', 'id', 'from'];
 
-	//模型读取器getUrlAttr();
 	public function getUrlAttr($value, $data)
 	{
 		return $this->prefixImgUrl($value, $data);

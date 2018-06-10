@@ -28,12 +28,6 @@ class Banner extends BaseController
 	    $validate = new IDMustBePositiveInt();
 	    $validate->goCheck();
 	    $banner = BannerModel::getBannerById($id);
-	    //删除一些字段属性，使其不返回的一种不太好的方式
-        //$data = $banner->toArray();
-        //unset($data['delete_time]);
-        //方式2 模型有hidden()方法，可以调用
-        //$banner->hidde(['delete_time','update_time']);
-        //或者显示哪些$banner->visible(['delete_time']);
         if (!$banner ) {
             throw new MissException([
                 'msg'   =>  '请求的banner不存在',
