@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Administrator
- * Date: 2018/6/10
- * Time: 22:04
- */
+
 namespace app\api\model;
 
 use think\Model;
@@ -37,14 +32,3 @@ class Category extends BaseModel
         return $category;
     }
 }
-
-
-
-
-
-
-
-
-
-
-

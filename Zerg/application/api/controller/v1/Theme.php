@@ -1,51 +1,51 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Administrator
- * Date: 2018/5/30
- * Time: 23:08
- */
+
 namespace app\api\controller\v1;
 
 use app\api\model\Theme as ThemeModel;
 use app\api\validate\IDCollection;
 use app\api\validate\IDMustBePositiveInt;
 use app\api\validate\ThemeProduct;
-use app\lib\exception\successMessage;
+use app\lib\exception\SuccessMessage;
 use app\lib\exception\ThemeException;
 use think\Controller;
 use think\Exception;
-use think\Request;
 
 /**
- * 主题推荐，主题指首页里多个聚集在一起的商品
+ * 主题推荐,主题指首页里多个聚合在一起的商品
  * 注意同专题区分
- * 常规的REST服务创建成功后，需要在Response的header里附加成功创建资源URL，但是这种
- * 方式在内部开发中并不常用，所以本项目不采用这种方式
+ * 常规的REST服务在创建成功后，需要在Response的
+ * header里附加成功创建资源的URL，但这通常在内部开发中
+ * 并不常用，所以本项目不采用这种方式
  */
 class Theme extends Controller
 {
-    public function __construct(Request $request = null)
-    {
-        parent::__construct($request);
-    }
-
     /**
-     * @url     /theme?ids = :id1,id2,id3
+     * @url     /theme?ids=:id1,id2,id3...
      * @return  array of theme
-     * @throws ThemeException
+     * @throws  ThemeException
+     * @note 实体查询分单一和列表查询，可以只设计一个接收列表接口，
+     *       单一查询也需要传入一个元素的数组
+     *       对于传递多个数组的id可以选用post传递、
+     *       多个id+分隔符或者将多个id序列化成json并在query中传递
      */
     public function getSimpleList($ids = '')
     {
         $validate = new IDCollection();
         $validate->goCheck();
         $ids = explode(',', $ids);
-        //查询结果集
         $result = ThemeModel::with('topicImg,headImg')->select($ids);
 
+//        $result = ThemeModel::getThemeList($ids);
         if (!$result) {
             throw new ThemeException();
         }
+
+        // 框架会自动序列化数据为JSON，所以这里不要toJSON！
+//        $result = $result->hidden(['products.imgs'])
+//            ->toArray();
+//        $result = $result->hidden([
+//            'products.category_id','products.stock','products.summary']);
         return $result;
     }
 
@@ -53,12 +53,13 @@ class Theme extends Controller
     {
         (new IDMustBePositiveInt())->goCheck();
         $theme = ThemeModel::getThemeWithProducts($id);
-        if (!$theme) {
+        if(!$theme){
             throw new ThemeException();
         }
-        //隐藏一些字段后返回
         return $theme->hidden(['products.summary'])->toArray();
     }
+
+//    public function getThemeSummary()
 
     /**
      * @url /theme/:t_id/product/:p_id
@@ -89,18 +90,16 @@ class Theme extends Controller
             'code' => 204
         ]);
     }
+
+    // 去除部分属性，尽量对客户端保持精简
+//    private function cutThemes($themes)
+//    {
+//        foreach ($themes as &$theme) {
+//            foreach ($theme['products'] as &$product) {
+//                unset($product['stock']);
+//                unset($product['summary']);
+//            }
+//        }
+//        return $themes;
+//    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

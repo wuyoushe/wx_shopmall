@@ -26,7 +26,7 @@ class Category extends BaseController
     {
 
         $categories = CategoryModel::all([], 'img');
-        return $categories;
+        //return $categories;
         if (empty($categories)) {
             throw new MissException([
                 'msg'       =>  '还没有任何类名',
@@ -36,11 +36,13 @@ class Category extends BaseController
         return $categories;
     }
 
-    public function getCategory($id)
+    public function getCategories($id)
     {
         $validate = new IDMustBePositiveInt();
         $validate->goCheck();
-        $category = CategoryModel::getCategories($id);
+        $category = CategoryModel::getCategory($id);
+        print_r($category);
+        die();
         if (empty($category)) {
             throw new MissException([
                 'msg'   =>  'category not found'

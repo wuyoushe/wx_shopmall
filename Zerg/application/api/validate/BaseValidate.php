@@ -12,8 +12,6 @@ class BaseValidate extends Validate
 		//获取所有的传递的参数
 		$request = Request::instance();
 		$params = $request->param();
-
-		;
 		if(!$this->check($params)){
 			$exception = new parameterException([
 			    'msg'   =>  is_array($this->error) ? implode(';', $this->error) : $this->error

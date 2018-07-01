@@ -1,64 +1,73 @@
-//index.js
-//获取应用实例
-const app = getApp()
-
+import { Home } from 'home-model.js';
+var home = new Home(); //实例化 首页 对象
 Page({
-  data: {
-    motto: 'Hello World',
-    userInfo: {},
-    hasUserInfo: false,
-    canIUse: wx.canIUse('button.open-type.getUserInfo')
-  },
-  //事件处理函数
-  bindViewTap: function() {
-    wx.navigateTo({
-      url: '../logs/logs'
-    })
-  },
-  onLoad: function () {
-    var that = this;
-    wx.request({
-      // url: 'http://news-at.zhihu.com/api/4/news/latest',
-      url:  'https://api.douban.com/v2/book/1220562',
-      header: {'Content-Type':'application/json'},
-      success:function (res){
-        console.log(res);
-      }
+    data: {
+        loadingHidden: false
+    },
+    onLoad: function () {
+        this._loadData();
+    },
 
-    })
-    if (app.globalData.userInfo) {
-      this.setData({
-        userInfo: app.globalData.userInfo,
-        hasUserInfo: true
-      })
-    } else if (this.data.canIUse){
-      // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
-      // 所以此处加入 callback 以防止这种情况
-      app.userInfoReadyCallback = res => {
-        this.setData({
-          userInfo: res.userInfo,
-          hasUserInfo: true
+    /*加载所有数据*/
+    _loadData:function(callback){
+        var that = this;
+
+        // 获得bannar信息
+        home.getBannerData((data) => {
+            that.setData({
+                bannerArr: data,
+            });
+        });
+
+        /*获取主题信息*/
+        home.getThemeData((data) => {
+            that.setData({
+                themeArr: data,
+                loadingHidden: true
+            });
+        });
+
+        /*获取单品信息*/
+        home.getProductorData((data) => {
+            that.setData({
+                productsArr: data
+            });
+            callback&&callback();
+        });
+    },
+
+    /*跳转到商品详情*/
+    onProductsItemTap: function (event) {
+        var id = home.getDataSet(event, 'id');
+        wx.navigateTo({
+            url: '../product/product?id=' + id
         })
-      }
-    } else {
-      // 在没有 open-type=getUserInfo 版本的兼容处理
-      wx.getUserInfo({
-        success: res => {
-          app.globalData.userInfo = res.userInfo
-          this.setData({
-            userInfo: res.userInfo,
-            hasUserInfo: true
-          })
+    },
+
+    /*跳转到主题列表*/
+    onThemesItemTap: function (event) {
+        var id = home.getDataSet(event, 'id');
+        var name = home.getDataSet(event, 'name');
+        wx.navigateTo({
+            url: '../theme/theme?id=' + id+'&name='+ name
+        })
+    },
+
+    /*下拉刷新页面*/
+    onPullDownRefresh: function(){
+        this._loadData(()=>{
+            wx.stopPullDownRefresh()
+        });
+    },
+
+    //分享效果
+    onShareAppMessage: function () {
+        return {
+            title: '零食商贩 Pretty Vendor',
+            path: 'pages/home/home'
         }
-      })
     }
-  },
-  getUserInfo: function(e) {
-    console.log(e)
-    app.globalData.userInfo = e.detail.userInfo
-    this.setData({
-      userInfo: e.detail.userInfo,
-      hasUserInfo: true
-    })
-  }
+
 })
+
+
