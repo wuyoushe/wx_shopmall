@@ -46,4 +46,4 @@ class Home extends Base{
     }
 };
 
-export {Home};
+export { Home };

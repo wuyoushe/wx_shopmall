@@ -66,13 +66,12 @@ class Product extends Controller
     {
         (new IDMustBePositiveInt())->goCheck();
         $products = ProductModel::getProductsByCategoryID($id, false);
-        if ($products->isEmpty())
+        if (empty($products))
         {
             throw new ThemeException();
         }
-        $data = $products
-            ->toArray();
-        return $data;
+
+        return $products;
     }
     /**
      * 获取指定数量的最近商品
@@ -104,7 +103,9 @@ class Product extends Controller
     public function getOne($id)
     {
         (new IDMustBePositiveInt())->goCheck();
+        print_r(222);
         $product = ProductModel::getProductDetail($id);
+        print_r(333);
         if (!$product) {
             throw new ProductException();
         }

@@ -14,6 +14,8 @@ Page({
 
         // 获得bannar信息
         home.getBannerData((data) => {
+            console.log(data);
+            return;
             that.setData({
                 bannerArr: data,
             });

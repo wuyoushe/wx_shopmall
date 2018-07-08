@@ -19,7 +19,7 @@ class Category extends BaseModel
     public static function getCategories($ids)
     {
         $categories = self::with('products')
-            ->with('products.img')
+            ->with('products.imgs')
             ->select($ids);
         return $categories;
     }
@@ -27,7 +27,7 @@ class Category extends BaseModel
     public static function getCategory($id)
     {
         $category = self::with('products')
-            ->with('products.img')
+            ->with('products.imgs')
             ->find($id);
         return $category;
     }

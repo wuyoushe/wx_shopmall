@@ -24,7 +24,6 @@ class Category extends BaseController
      */
     public function getAllCategories()
     {
-
         $categories = CategoryModel::all([], 'img');
         //return $categories;
         if (empty($categories)) {
@@ -41,8 +40,7 @@ class Category extends BaseController
         $validate = new IDMustBePositiveInt();
         $validate->goCheck();
         $category = CategoryModel::getCategory($id);
-        print_r($category);
-        die();
+
         if (empty($category)) {
             throw new MissException([
                 'msg'   =>  'category not found'

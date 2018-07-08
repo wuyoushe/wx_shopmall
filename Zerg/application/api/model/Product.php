@@ -69,12 +69,12 @@ $page = 1, $size = 30)
     public static function getProductDetail($id)
     {
         $product = self::with(
-          [
-              'imgs'    => function ($query)
-              {
-                  $query->with(['imgUrl'])
-                      ->order('order','asc');
-              }])
+            [
+                'imgs' => function ($query)
+                {
+                    $query->with(['imgUrl'])
+                        ->order('order', 'asc');
+                }])
             ->with('properties')
             ->find($id);
         return $product;
