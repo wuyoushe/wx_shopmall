@@ -32,11 +32,13 @@ class UserToken extends Token
 
     public function get()
     {
+        //调用url获取结果
         $result = curl_get($this->wxLoginUrl);
         $wxResult = json_decode($result, true);
         if (empty($wxResult)) {
             throw new Exception('获取session_key及openID时异常，微信内部错误');
         }else {
+            //进一步判断errorcode是否存在，证明调用失败，微信返回失败会返回errorcode
             $loginFail = array_key_exists('errcode', $wxResult);
             if ($loginFail) {
                 $this->processLoginError($wxResult);
@@ -89,6 +91,14 @@ class UserToken extends Token
         // 如果想要更加安全可以考虑自己生成更复杂的令牌
         // 比如使用JWT并加入盐，如果不加入盐有一定的几率伪造令牌
         //        $token = Request::instance()->token('token', 'md5');
+        //拿到openid
+        //数据库看一下，这个openid是不是已经存在
+        //如果存在，则不处理，如果不存在那么新增一条user记录
+        //生成令牌，准备存入缓存数据，写入缓存
+        //把令牌返回客户端
+        //令牌是键值对
+        //key:令牌
+        //value:wxResult, uid, scope(访问控制)
         $openid = $wxResult['openid'];
         $user = User::getByOpenID($openid);
         if (!$user)

@@ -45,6 +45,8 @@ Route::post('api/:version/token/user', 'api/:version.Token/getToken');
 Route::post('api/:version/token/app', 'api/:version.Token/getAppToken');
 Route::post('api/:version/token/verify', 'api/:version.Token/verifyToken');
 
+Route::post('api/:version/address', 'api/:version.Address/createOrUpdateAddress');
+
 
 
 

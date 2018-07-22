@@ -31,9 +31,10 @@ class Token
      */
     public function getToken($code='')
     {
-//        print_r($code);
-//        die();
-//        (new TokenGet())->goCheck();
+        //print_r($code);
+        //(new TokenGet())->goCheck();
+       // print_r(111);
+        //die();
         $wx = new UserToken($code);
         $token = $wx->get();
         return [
